@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Users(models.Model):
+class User(models.Model):
     username = models.CharField(max_length=50, unique=True)  # 用户名
     password = models.CharField(max_length=128)  # 密码
     nickname = models.CharField(max_length=50, blank=True, null=True)  # 昵称
@@ -15,7 +15,7 @@ class Users(models.Model):
 
 
 class UserMeta(models.Model):
-    user = models.ForeignKey(Users)
+    user = models.ForeignKey(User)
     key = models.CharField(max_length=100)
     value = models.TextField()
 
@@ -23,7 +23,7 @@ class UserMeta(models.Model):
         return self.key
 
 
-class Categorys(models.Model):
+class Category(models.Model):
     name = models.CharField(max_length=20)
     description =models.CharField(max_length=100, blank=True, null=True)
     create_time = models.DateTimeField(auto_now_add=True)
@@ -34,7 +34,7 @@ class Categorys(models.Model):
         return self.name
 
 
-class Tags(models.Model):
+class Tag(models.Model):
     name = models.CharField(max_length=20)
     create_time = models.DateTimeField(auto_now_add=True)
 
@@ -50,8 +50,8 @@ class Tags(models.Model):
 #     #     return 'tagship'
 
 
-class Posts(models.Model):
-    author = models.ForeignKey(Users)
+class Post(models.Model):
+    author = models.ForeignKey(User)
     title = models.CharField(max_length=50)  # 标题
     excerpt = models.CharField(max_length=200, blank=True, null=True)  # 摘要
     content = models.TextField()  # 正文
@@ -63,15 +63,17 @@ class Posts(models.Model):
     comment_status = models.CharField(max_length=20, blank=True, null=True)  # 文章评论状态
     comment_count = models.IntegerField(blank=True, null=True)  # 文章评论数
 
-    tags = models.ManyToManyField(Tags)  # 文章标签
-    category = models.ForeignKey(Categorys)  # 文章类别
+    tags = models.ManyToManyField(Tag)  # 文章标签
+    category = models.ForeignKey(Category)  # 文章类别
+
+    # hits = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
 
 
 class PostMeta(models.Model):
-    post = models.ForeignKey(Posts)
+    post = models.ForeignKey(Post)
     key = models.CharField(max_length=100)
     value = models.TextField()
 
@@ -79,8 +81,8 @@ class PostMeta(models.Model):
         return self.key
 
 
-class Comments(models.Model):
-    post = models.ForeignKey(Posts, verbose_name='tht post comments in')
+class Comment(models.Model):
+    post = models.ForeignKey(Post, verbose_name='tht post comments in')
     author = models.CharField(max_length=50, null=True, blank=True)  # 评论者
     author_email = models.EmailField(null=True, blank=True)  # 评论者邮箱
     author_url = models.URLField(null=True, blank=True)  # 评论者网址
@@ -97,7 +99,7 @@ class Comments(models.Model):
 
 
 class CommentMeta(models.Model):
-    comment = models.ForeignKey(Comments, verbose_name='related post')
+    comment = models.ForeignKey(Comment, verbose_name='related post')
     key = models.CharField(max_length=100)
     value = models.TextField()
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from blog.models import Users, UserMeta, Posts, PostMeta, Comments, CommentMeta, Categorys, Tags
+from blog.models import User, UserMeta, Post, PostMeta, Comment, CommentMeta, Category, Tag
 
 
 class UsersAdmin(admin.ModelAdmin):
@@ -7,11 +7,11 @@ class UsersAdmin(admin.ModelAdmin):
     list_display = ('id', 'username', 'nickname', 'email', 'website', 'registered', 'status')
 
 
-admin.site.register(Users, UsersAdmin)
+admin.site.register(User, UsersAdmin)
 admin.site.register(UserMeta)
-admin.site.register(Posts)
+admin.site.register(Post)
 admin.site.register(PostMeta)
-admin.site.register(Comments)
+admin.site.register(Comment)
 admin.site.register(CommentMeta)
-admin.site.register(Categorys)
-admin.site.register(Tags)
+admin.site.register(Category)
+admin.site.register(Tag)
