@@ -15,12 +15,12 @@ class User(models.Model):
 
 
 class UserMeta(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     key = models.CharField(max_length=100)
     value = models.TextField()
 
     def __str__(self):
-        return self.key
+        return self.user
 
 
 class Category(models.Model):
@@ -51,7 +51,7 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, default=None, on_delete=models.SET_DEFAULT)
     title = models.CharField(max_length=50)  # 标题
     excerpt = models.CharField(max_length=200, blank=True, null=True)  # 摘要
     content = models.TextField()  # 正文
@@ -64,25 +64,27 @@ class Post(models.Model):
     comment_count = models.IntegerField(blank=True, null=True)  # 文章评论数
 
     tags = models.ManyToManyField(Tag)  # 文章标签
-    category = models.ForeignKey(Category)  # 文章类别
+    category = models.ForeignKey(Category, default=None, on_delete=models.CASCADE)  # 文章类别
 
-    # hits = models.IntegerField(default=0)
+    hits = models.IntegerField(default=0) #点击数
+    praises = models.IntegerField(default=0) #点赞数
+
 
     def __str__(self):
         return self.title
 
 
 class PostMeta(models.Model):
-    post = models.ForeignKey(Post)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     key = models.CharField(max_length=100)
     value = models.TextField()
 
     def __str__(self):
-        return self.key
+        return self.post
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, verbose_name='tht post comments in')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     author = models.CharField(max_length=50, null=True, blank=True)  # 评论者
     author_email = models.EmailField(null=True, blank=True)  # 评论者邮箱
     author_url = models.URLField(null=True, blank=True)  # 评论者网址
@@ -99,11 +101,11 @@ class Comment(models.Model):
 
 
 class CommentMeta(models.Model):
-    comment = models.ForeignKey(Comment, verbose_name='related post')
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     key = models.CharField(max_length=100)
     value = models.TextField()
 
     def __str__(self):
-        return self.key
+        return self.comment
 
 

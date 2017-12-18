@@ -1,0 +1,28 @@
+#nav{
+    max-width: 800px;
+    margin: 10px auto;
+}
+
+#nav a, ul{
+    list-style-type: None;
+    display: inline-block;
+}
+
+#nav ul li{
+    display: inline-block;
+}
+
+#nav .title{
+    text-decoration: None;
+}
+
+.logo-intro #logo_img{
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    margin: auto;
+}
+
+.logo-intro #logo_text{
+    margin: auto;
+}
